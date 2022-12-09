@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/julius/Programming/Dotnet/scheduler/scheduler.csproj": {}
+    "/home/julius/Programming/Dotnet/LACS_Scheduling_Code/scheduler.csproj": {}
   },
   "projects": {
-    "/home/julius/Programming/Dotnet/scheduler/scheduler.csproj": {
+    "/home/julius/Programming/Dotnet/LACS_Scheduling_Code/scheduler.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/julius/Programming/Dotnet/scheduler/scheduler.csproj",
+        "projectUniqueName": "/home/julius/Programming/Dotnet/LACS_Scheduling_Code/scheduler.csproj",
         "projectName": "scheduler",
-        "projectPath": "/home/julius/Programming/Dotnet/scheduler/scheduler.csproj",
+        "projectPath": "/home/julius/Programming/Dotnet/LACS_Scheduling_Code/scheduler.csproj",
         "packagesPath": "/home/julius/.nuget/packages/",
-        "outputPath": "/home/julius/Programming/Dotnet/scheduler/obj/",
+        "outputPath": "/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/julius/.nuget/NuGet/NuGet.Config"
@@ -37,6 +37,12 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "CsvHelper": {
+              "target": "Package",
+              "version": "[30.0.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -52,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/6.0.108/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/6.0.111/RuntimeIdentifierGraph.json"
         }
       }
     }

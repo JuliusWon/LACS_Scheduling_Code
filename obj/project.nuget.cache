@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "kgIDMSdqqBfo9X5mxXRJmvbClrNuP38l+ES5YIZtT4nF8cdyuRd2PR8Ma+EYPdgwzo7X7F+gWscx/xXivcEWxQ==",
+  "dgSpecHash": "3bDlEEdKOp7HqaOkndAw7QYZCnKVE9XsDdgW8jrg3i1vzjms7Vh+VLckfiWZqkRbBNpGgLCFJbJIdSrrzHp0jw==",
   "success": true,
-  "projectFilePath": "/home/julius/Programming/Dotnet/scheduler/scheduler.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/julius/Programming/Dotnet/LACS_Scheduling_Code/scheduler.csproj",
+  "expectedPackageFiles": [
+    "/home/julius/.nuget/packages/csvhelper/30.0.1/csvhelper.30.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

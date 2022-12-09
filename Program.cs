@@ -1,5 +1,9 @@
 using System;
-
+using CsvHelper;
+using System.Globalization;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 namespace MyApp
 {
     internal class Program
@@ -12,6 +16,8 @@ namespace MyApp
               ps.debugging = true;
             }
           }
+          ps.querryUser();
+          ps.getStudents();
           ps.Initialize();
         }
     }
@@ -35,51 +41,69 @@ namespace MyApp
         students = new student[cap];
       }
     }
+    class studentFromCSV {
+      public string First {get; set;}
+      public string Last {get;set;}
+      public string Primary {get; set;}
+      public string Secondary {get; set;}
+      public string Final {get; set;}
+      public string Grade {get; set;}
+    }
+    public class periodFromCSV {
+      public string Name {get;set;}
+      public int Cap {get;set;}
+    }
     public class Processing{
       public bool debugging = false;
       period[] schedule;
-      string[] classNames = new string[]{"Eng","Math","Sci","Soc","Art","Music","PE"};
-      int[] classCaps = new int[]{6,5,6,3,9,9,8};
-      student[] students = new student[39];
-      int[] grades =  new int[] {12,10,10,11,11,9,9,10,12,12,9,12,9,10,11,9,9,11,11,9,12,10,11,10,9,12,10,9,12,12,11,10,12,9,10,10,9,12,10};
-      string[] firstchoices = new string[] {"Math","PE","Art","Math","Music","Eng","Music","PE","Eng","PE","Math","Art","Soc","Music","Sci","Soc","Sci","PE","Art","Math","Soc","Sci","Art","Math","Music","Eng","PE","Soc","Eng","Soc","Math","Art","Music","PE","PE","Soc","Art","Sci","Soc"};
-      string[] secondchoices = new string[] {"Soc","Eng","Math","PE","Sci","Music","Soc","Math","Soc","Eng","Soc","Math","PE","Art","Eng","Art","PE","Sci","Music","Sci","Math","Math","Music","Soc","PE","Art","Eng","Math","Soc","Math","Soc","Music","Math","Soc","Sci","PE","Music","PE","Art"};
-      string[] thirdchoices = new string[] {"Eng","Music","PE","Eng","Math","Soc","PE","Eng","Art","Math","Art","Soc","Music","Math","Math","Eng","Eng","Soc","Soc","Art","Music","PE","Eng","PE","Sci","Music","Math","PE","Sci","Music","Art","Math","Sci","Music","PE","Art","Math","Art","Music"};
-      string[] names = new string[] {"Julius","Pedro","Leo","Ben","Fredrick","Emilia","Sam","Aella","Garik","Sword","Student","Child","William","Tim","Ari","Kira","Matt","Vahni","Peter","Rad","Tom","Timy","Bob","Tod","Timothy","Rat","Tommethy","Zimmethy","Jame","Jimothy","Zormmmethy","Willithe","Zore","Blorpy","Zlorpy","Zeff","Zall","Grazz","Grass Eater"};
+      int[] classCaps;
+      student[] students;
+      public void querryUser(){
+        Console.WriteLine("Num. Class Offerings.");
+        schedule = new period[int.Parse(Console.ReadLine())];
+        Console.WriteLine("Num. Students");
+        students = new student[int.Parse(Console.ReadLine())];
+      }
+      public void getStudents(){
+        using (var reader = new StreamReader("example2.csv"))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            var records = csv.GetRecords<studentFromCSV>();
+            int i = 0;
+            foreach(var ex in records){
+              students[i] = new student();
+              students[i].name = ex.First+" "+ex.Last;
+              students[i].firstchoice = ex.Primary;
+              students[i].secondchoice = ex.Secondary;
+              students[i].thirdchoice = ex.Final;
+              students[i].grade = int.Parse(ex.Grade);
+              i++;
+            }
+        }
+        using (var reader = new StreamReader("example2classes.csv"))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            var records2 = csv.GetRecords<periodFromCSV>();
+            int i = 0;
+            foreach(var ex2 in records2){
+              schedule[i] = new period();
+              schedule[i].name = ex2.Name;
+              schedule[i].cap = ex2.Cap;
+              schedule[i].Setup();
+              i++;
+            }
+        }
+      }
       public void Initialize(){
-        schedule = new period[7];
-        for(int i=0;i<schedule.Length;i++){
-          schedule[i] = new period();
-          schedule[i].cap = classCaps[i];
-          schedule[i].name = classNames[i];
-          schedule[i].Setup();
-        }
-        for(int i=0;i<students.Length;i++){
-          students[i] = new student();
-          students[i].name = names[i];
-          students[i].grade = grades[i];
-          students[i].favor = grades[i];
-          if(students[i].name == "Julius"){
-            students[i].favor = 100;
-          }
-          students[i].firstchoice = firstchoices[i];
-          students[i].secondchoice = secondchoices[i];
-          students[i].thirdchoice = thirdchoices[i];
-        }
         CalculatePopularity();
-
       }
       void CalculatePopularity(){
         foreach(student s in students){
           schedule[identifyClass(s.firstchoice)].popularity+=3;
           schedule[identifyClass(s.secondchoice)].popularity+=2;
-
           schedule[identifyClass(s.thirdchoice)].popularity++;
         }
         Process();
-      }
-      public void bump(){
-
       }
       student determineBump(period p, int favorIn){
         int lowestFavor = favorIn;
@@ -98,7 +122,6 @@ namespace MyApp
         }
         printAllInfo();
       }
-
       public void ProcessStudent(student studentProc){
         if(studentProc.firstchoice == null || studentProc.name == null || studentProc.secondchoice == null){
           Console.WriteLine("Error");
@@ -185,12 +208,15 @@ namespace MyApp
         }
       }
       int identifyClass(string input){
-        int outputInt = 42;
-        for(int i = 0;i<classNames.Length;i++){
-          if(classNames[i] == input){
+        int outputInt = 39;
+        for(int i = 0;i<schedule.Length;i++){
+          if(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(schedule[i].name) == CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input)){
             outputInt = i;
           }
         }
+      if(outputInt == 39){
+        Console.WriteLine(input);
+      }
         return outputInt;
       }
     }

@@ -1,0 +1,17 @@
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/bin/Debug/net6.0/win10-x64/scheduler.exe
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/bin/Debug/net6.0/win10-x64/scheduler.deps.json
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/bin/Debug/net6.0/win10-x64/scheduler.runtimeconfig.json
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/bin/Debug/net6.0/win10-x64/scheduler.dll
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/bin/Debug/net6.0/win10-x64/ref/scheduler.dll
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/bin/Debug/net6.0/win10-x64/scheduler.pdb
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/bin/Debug/net6.0/win10-x64/CsvHelper.dll
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.csproj.AssemblyReference.cache
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.GeneratedMSBuildEditorConfig.editorconfig
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.AssemblyInfoInputs.cache
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.AssemblyInfo.cs
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.csproj.CoreCompileInputs.cache
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.csproj.CopyComplete
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.dll
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/ref/scheduler.dll
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.pdb
+/home/julius/Programming/Dotnet/LACS_Scheduling_Code/obj/Debug/net6.0/win10-x64/scheduler.genruntimeconfig.cache
