@@ -19,6 +19,7 @@ namespace MyApp
           ps.querryUser();
           ps.getStudents();
           ps.Initialize();
+          ps.writeToTextFile();
         }
     }
     public class student{
@@ -54,18 +55,30 @@ namespace MyApp
       public int Cap {get;set;}
     }
     public class Processing{
+      string[] outputToTxt;
+      List<string> classNames = new List<string>(1);
       public bool debugging = false;
       period[] schedule;
       int[] classCaps;
       student[] students;
       public void querryUser(){
-        Console.WriteLine("Num. Class Offerings.");
-        schedule = new period[int.Parse(Console.ReadLine())];
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Num. Students");
         students = new student[int.Parse(Console.ReadLine())];
+        Console.ForegroundColor = ConsoleColor.Blue;
+      }
+      bool checkForClassAlreadyInList(string className){
+        bool output = false;
+        foreach(string name in classNames){
+          if(name  == className){
+            output =true;
+          }
+        }
+        return output;
       }
       public void getStudents(){
-        using (var reader = new StreamReader("example2.csv"))
+        string outputPath = "output.txt";
+        using (var reader = new StreamReader("example4.csv"))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csv.GetRecords<studentFromCSV>();
@@ -80,21 +93,44 @@ namespace MyApp
               i++;
             }
         }
-        using (var reader = new StreamReader("example2classes.csv"))
+        using (var reader = new StreamReader("example4.csv"))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var records2 = csv.GetRecords<periodFromCSV>();
+            var records3 = csv.GetRecords<studentFromCSV>();
             int i = 0;
-            foreach(var ex2 in records2){
-              schedule[i] = new period();
-              schedule[i].name = ex2.Name;
-              schedule[i].cap = ex2.Cap;
-              schedule[i].Setup();
-              i++;
+            foreach(var records2 in records3){
+              if(!checkForClassAlreadyInList(records2.Primary)){
+                classNames.Add(records2.Primary);
+              }
+              if(!checkForClassAlreadyInList(records2.Secondary)){
+                classNames.Add(records2.Secondary);
+              }
+              if(!checkForClassAlreadyInList(records2.Final)){
+                classNames.Add(records2.Final);
+              }
+            }
+            schedule = new period[classNames.Count()];
+            Console.WriteLine(schedule.Length);
+            for(int j = 0;j<schedule.Length;j++){
+              schedule[j] = new period();
+              schedule[j].name = classNames[j];
+              //Ask the user the caps for all the classes. Could also be done through a CSV
+              if(schedule[j].name != ""&&schedule[j].name != "Other"){
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Capacity of "+schedule[j].name+":");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                schedule[j].cap = int.Parse(Console.ReadLine());
+              }else{
+                schedule[j].cap = students.Length;
+              }
+              schedule[j].Setup();
             }
         }
       }
       public void Initialize(){
+        foreach(period s in schedule){
+          Console.WriteLine(s.name);
+        }
         CalculatePopularity();
       }
       void CalculatePopularity(){
@@ -167,25 +203,58 @@ namespace MyApp
           }
         }
       }
+      public void writeToTextFile(){
+        outputToTxt = new string[students.Length];
+        for(int k = 0;k<students.Length;k++){
+          if(students[k].choiceGot == 1){
+            outputToTxt[k] = students[k].name+": "+students[k].firstchoice;
+          }
+            if(students[k].choiceGot == 3){
+            outputToTxt[k] = students[k].name+": "+students[k].thirdchoice;
+          }
+            if(students[k].choiceGot == 2){
+            outputToTxt[k] = students[k].name+": "+students[k].secondchoice;
+          }
+        }
+        using (StreamWriter outputFile = new StreamWriter("output.txt"))
+        {
+            foreach (string line in outputToTxt)
+                outputFile.WriteLine(line);
+        }
+      }
       public void printAllInfo(){
         int i=0;
         foreach(period p in schedule){
+          Console.ForegroundColor = ConsoleColor.Blue;
           Console.WriteLine("-------------------------------------------------------------------");
           Console.Write(p.name);
-          Console.Write(": popularity: ");
-          Console.Write(p.popularity);
+          Console.Write(": Students: ");
+          //Count the number of students actually in the class
+          int counter = 0;
+          foreach(student st in p.students){
+            if(st != null){
+              counter++;
+            }
+          }
+          Console.Write(counter);
+          Console.Write("/");
+          Console.Write(p.cap);
           Console.WriteLine("");
           foreach(student s in p.students){
             if(s!= null){
               i++;
+              Console.ForegroundColor = ConsoleColor.Green;
               Console.Write(s.name);
               Console.Write(": ");
+              Console.ForegroundColor = ConsoleColor.Magenta;
               Console.Write(s.choiceGot);
+              Console.ForegroundColor = ConsoleColor.Red;
               Console.Write(" [Grade]: ");
               Console.WriteLine(s.grade);
             }
           }
         }
+        Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine("-------------------------------------------------------------------");
         Console.WriteLine("For Manual Sorting:");
         foreach(student q in students){
@@ -207,17 +276,19 @@ namespace MyApp
           }
         }
       }
-      int identifyClass(string input){
-        int outputInt = 39;
-        for(int i = 0;i<schedule.Length;i++){
-          if(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(schedule[i].name) == CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input)){
-            outputInt = i;
-          }
-        }
+    int identifyClass(string input){
+      int outputInt = 39;
+      for(int i = 0;i<schedule.Length;i++)
+      {
+        if(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(schedule[i].name) == CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input))
+        {
+          outputInt = i;
+        }
+      }
       if(outputInt == 39){
         Console.WriteLine(input);
       }
-        return outputInt;
-      }
+      return outputInt;
+      }
     }
 }
